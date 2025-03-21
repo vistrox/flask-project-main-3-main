@@ -1,0 +1,181 @@
+{% extends "base.html" %} {% block title %}Booking 3D Printer{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='/LabManager_pj/Booking3D/style3D.css') }}" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <form method="POST">
+    <header class="header">
+      <nav>
+        <div class="nav__bar">
+          <div class="logo">
+            <div class="lab-manager">Lab Manager</div>
+            <span class="btn booking-3d">: Booking 3D Printer</span>
+            <img src="{{url_for ('static', filename='/LabManager_pj/Booking3D/icon3D.png')}}" alt="booking3D" />
+          </div>
+        </div>
+        <a href="{{ url_for('views.home') }}" class="btn nav__btn">HOME</a>
+      </nav>
+    </header>
+
+    <div class="main">
+      <div class="infoS1">
+        <img src="{{ url_for('static', filename='LabManager_pj/Booking3D/infoS1.PNG') }}" alt="info-S1">
+      </div>
+      <div class="infoK1">
+        <img src="{{ url_for('static', filename='LabManager_pj/Booking3D/infoK1.PNG') }}" alt="info-K1">
+      </div>
+    </div>
+
+    <div class="userInput">
+      <div class="frame">
+        <p class="underline-bg">Booking</p>
+
+        <div class="equipments">
+          <p>Equipments</p>
+          <select class="typebox-3d-select">
+            <option value="" disabled selected>Select 3D Printer</option>
+            <option value="Ender-3 S1 Pro">Ender-3 S1 Pro</option>
+            <option value="K1">K1</option>
+          </select>
+        </div>
+
+        <div class="no-3-d">
+          <p>No.</p>
+          <select id="3d-select" class="box-no">
+            <option value="" disabled selected>Select No.</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+
+        <div class="date2">
+          <p class="Date">Date</p>
+          <input type="date" id="booking-date" class="boxDate" />
+        </div>
+
+        <div class="time-start">
+          <p class="time-start2">Time Start</p>
+          <input type="time" id="time-start" class="box-time-start" />
+        </div>
+
+        <div class="time-end">
+          <p class="time-end2">Time End</p>
+          <input type="time" id="time-end" class="box-time-end" />
+        </div>
+
+        <button type="submit" class="button-confirm">
+          <div class="confirm">Confirm</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="booking-table">
+      <h2>Booking List</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>3D Printer</th>
+            <th>No.</th>
+            <th>Date</th>
+            <th>Time Start</th>
+            <th>Time End</th>
+          </tr>
+        </thead>
+        <tbody id="booking-list">
+          <!-- Booking data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </form>
+
+  <script>
+    function confirmBooking(event) {
+      event.preventDefault();
+      
+      let form = event.target.closest('form');
+      let printerModel = document.querySelector(".typebox-3d-select").value;
+      let printerNumber = document.querySelector(".box-no").value;
+      let bookingDate = document.getElementById("booking-date").value;
+      let bookingStartTime = document.getElementById("time-start").value;
+      let bookingEndTime = document.getElementById("time-end").value;
+  
+      if (!printerModel || !printerNumber || !bookingDate || !bookingStartTime || !bookingEndTime) {
+          alert("Please fill in all fields before confirming.");
+          return;
+      }
+  
+      // Create form data matching Flask backend expectations
+      const formData = new FormData();
+      formData.append('booking', printerModel);
+      formData.append('printer_number', printerNumber);
+      formData.append('booking_date', bookingDate);
+      formData.append('booking_start_time', bookingStartTime);
+      formData.append('booking_end_time', bookingEndTime);
+  
+      // Send the form data using fetch instead of form submission
+      fetch('/booking/3d', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              alert(`✅ Booking Confirmed!\n\n📌 3D Printer: ${printerModel}\n🔢 Number: ${printerNumber}\n📅 Date: ${bookingDate}\n⏰ Time: ${bookingStartTime} - ${bookingEndTime}`);
+              form.reset();
+              loadBookings();
+          } else {
+              alert('Booking failed: ' + data.error);
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to create booking');
+      });
+    }
+
+    document.querySelector('.button-confirm').addEventListener('click', confirmBooking);
+
+    function loadBookings() {
+      fetch('/get-printer-bookings')
+        .then(response => response.json())
+        .then(bookings => {
+          const bookingList = document.getElementById('booking-list');
+          bookingList.innerHTML = ''; // Clear existing entries
+
+          bookings.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${booking.username}</td>
+              <td>${booking.printer}</td>
+              <td>${booking.number}</td>
+              <td>${booking.date}</td>
+              <td>${booking.time_start}</td>
+              <td>${booking.time_end}</td>
+            `;
+            bookingList.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading bookings:', error));
+    }
+
+    // Load bookings when page loads
+    document.addEventListener('DOMContentLoaded', loadBookings);
+
+    // Refresh bookings every minute
+    setInterval(loadBookings, 60000);
+  </script>
+</body>
+</html>
+{% endblock %}
+

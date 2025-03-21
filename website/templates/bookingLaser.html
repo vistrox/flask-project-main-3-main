@@ -1,0 +1,177 @@
+{% extends "base.html" %} {% block title %}bookingCom{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='/LabManager_pj/bookingLaser/styleLaser.css') }}" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <form method="POST">
+    <header class="header">
+      <nav>
+        <div class="nav__bar">
+          <div class="logo">
+            <div class="lab-manager">Lab Manager</div>
+            <span class="btn booking-laser">: Booking Laser Cutter</span>
+            <img src="{{url_for ('static', filename='/LabManager_pj/bookingLaser/iconLaser.png')}}" alt="bookingLaser" />
+          </div>
+        </div>
+        <a href="{{ url_for('views.home') }}" class="btn nav__btn">HOME</a>
+      </nav>
+    </header>
+
+    <div class="main">
+      <div class="info">
+        <img src="{{ url_for('static', filename='LabManager_pj/BookingLaser/infoLaser.PNG') }}" alt="info-laser">
+      </div>
+    
+      <div class="userInput">
+        <div class="frame">
+          <p class="underline-bg">Booking</p>
+    
+          <div class="equipments">
+            <p>Equipments</p>
+            <select class="box-select-laser">
+              <option value="" disabled selected>Select Laser Cutter</option>
+              <option value="MIT Laser 6040">MIT Laser 6040</option>
+              <option value="TS6090L">TS6090L</option>
+              <option value="SCTECH 1390E-Series">SCTECH 1390E-Series</option>
+            </select>
+          </div>
+          
+          <div class="no-laser">
+            <p>No.</p>
+            <select id="laser-select" class="no-box">
+              <option value="" disabled selected>Select No.</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+    
+          <div class="date-laser">
+            <p class="date">Date</p>
+            <input type="date" id="booking-date" class="boxDate" />
+          </div>
+    
+          <div class="time-start-laser">
+            <p class="time-start">Time Start</p>
+            <input type="time" id="time-start" class="box-time-start" />
+          </div>
+    
+          <div class="time-end-laser">
+            <p class="time-end">Time End</p>
+            <input type="time" id="time-end" class="box-time-end" />
+          </div>
+    
+          <div class="button-confirm" onclick="confirmBooking(event)">
+            <div class="confirm">Confirm</div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Booking Table -->
+      <div class="booking-table">
+        <h2>Booking List</h2>
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Laser Cutter</th>
+              <th>No.</th>
+              <th>Date</th>
+              <th>Time Start</th>
+              <th>Time End</th>
+            </tr>
+          </thead>
+          <tbody id="booking-list">
+            <!-- Booking data will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+
+  <script>
+    function confirmBooking(event) {
+      event.preventDefault();
+      
+      let form = event.target.closest('form');
+      let laserModel = document.querySelector(".box-select-laser").value;
+      let laserNumber = document.querySelector(".no-box").value;
+      let bookingDate = document.getElementById("booking-date").value;
+      let bookingStartTime = document.getElementById("time-start").value;
+      let bookingEndTime = document.getElementById("time-end").value;
+
+      if (!laserModel || !laserNumber || !bookingDate || !bookingStartTime || !bookingEndTime) {
+          alert("Please fill in all fields before confirming.");
+          return;
+      }
+
+      // Create form data matching Flask backend expectations
+      const formData = new FormData();
+      formData.append('booking', laserModel);
+      formData.append('laser_number', laserNumber);
+      formData.append('booking_date', bookingDate);
+      formData.append('booking_start_time', bookingStartTime);
+      formData.append('booking_end_time', bookingEndTime);
+
+      // Send the form data using fetch instead of form submission
+      fetch('/booking/laser', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              alert(`✅ Booking Confirmed!\n\n📌 Laser Cutter: ${laserModel}\n🔢 Number: ${laserNumber}\n📅 Date: ${bookingDate}\n⏰ Time: ${bookingStartTime} - ${bookingEndTime}`);
+              form.reset();
+              loadBookings();
+          } else {
+              alert('Booking failed: ' + data.error);
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to create booking');
+      });
+    }
+
+    function loadBookings() {
+      fetch('/get-laser-bookings')
+        .then(response => response.json())
+        .then(bookings => {
+          const bookingList = document.getElementById('booking-list');
+          bookingList.innerHTML = ''; // Clear existing entries
+          
+          bookings.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${booking.username}</td>
+              <td>${booking.laser_model}</td>
+              <td>${booking.laser_number}</td>
+              <td>${booking.booking_date}</td>
+              <td>${booking.booking_start_time}</td>
+              <td>${booking.booking_end_time}</td>
+            `;
+            bookingList.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading bookings:', error));
+    }
+
+    // Load bookings when page loads
+    document.addEventListener('DOMContentLoaded', loadBookings);
+
+    // Refresh bookings every minute
+    setInterval(loadBookings, 60000);
+  </script>
+</body>
+</html>
+{% endblock %}
+

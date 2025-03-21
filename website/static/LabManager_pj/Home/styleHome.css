@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Tac+One&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap');
+
+.tac-one-regular {
+  font-family: "Tac One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.tilt-warp {
+  font-family: "Tilt Warp", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root{
+   --bg-clor: #083877;
+   --white: #ffffff;  
+   --black: #000000;
+   --dark-red: #bd300d;
+   --light-red: #C74749;
+   --footer-color: #191a23;
+   --booking-hover: #1770ed;
+   --max-width: 3200px; 
+
+}
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.btn{ /*log out button*/
+   padding: 0.75rem 1.5rem;
+   outline: none; /*เอาเส้นขอบออก เวลาคลิก*/
+   border: none; /*ไม่มีขอบ (border) ให้ปุ่มดูเรียบง่าย*/
+   font-size: 2.5rem;
+   font-weight: 500;
+   color: var(--white);
+   background-color: var(--dark-red);
+   border-radius: 10px;
+   cursor: pointer; /*เปลี่ยนเมาส์เป็นรูปมือ เวลาชี้ที่ปุ่ม*/
+   transition: 0.3;
+   font-family: "Tilt Warp", serif;
+}
+
+.btn:hover {
+  background-color: var(--light-red);
+}
+
+img {
+  width: 100%;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo {
+  /* max-width: 120px; */
+  font-family: "Tac One", serif;
+  font-size: 90px;
+  margin-left: 90px; /* ขยับโลโก้ออกห่างจากขอบซ้าย */
+  color: #000000;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+  background-color: #083877;
+}
+
+body {
+  font-family: "Tilt Warp", serif;
+}
+
+.header { 
+  background-color: var(--white);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+nav {
+  background-color: var(--white);
+  /* position: fixed; */
+  /* isolation: isolate; */
+  top: 0;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: auto; 
+  z-index: 9;
+}
+
+.nav__bar {
+  padding: 1rem 40px; /* เพิ่ม padding ซ้าย-ขวา */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background-color: var(--white);
+} 
+
+
+.nav__menu__btn {
+  font-size: 1.5rem;
+  color: var(--white);
+  cursor: pointer;
+
+}
+
+.nav__links {
+  list-style: none; /*ลบจุดหน้ารายการเมนู*/
+  position: absolute;
+  width: 100%;
+  padding: 2rem;
+  display: flex; /*ใช้ Flexbox เพื่อจัดเรียงไอเท็มเมนู*/
+  align-items: center; /*จัดให้อยู่ตรงกลางในแนวแกน X*/
+  flex-direction: column; /* ให้รายการเมนูเรียงแนวตั้ง (จากบนลงล่าง)*/
+  gap: 2rem; /*กำหนดระยะห่างระหว่างไอเท็มเมนู 2rem*/
+  background-color: rgba(76, 69, 72, 0.9);
+  transform: translateY(-100%);
+  transition: 0.5s;
+  z-index: 10;
+}
+
+.nav__links.open {
+  transform: translateY(0);
+}
+
+.nav__links a {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 8px;
+  color: var(--black);
+  transition: 0.3s;
+}
+
+.nav__btn {
+  display: none;
+  margin-right: 90px; /* ขยับปุ่ม Logout ออกห่างจากขอบขวา */
+}
+
+.image-container {
+   display: flex;
+   flex-direction: column; /* จัดให้อยู่แนวตั้ง */
+   align-items: center; /* จัดให้อยู่ตรงกลาง */
+   gap: 2rem; /* เว้นระยะห่างระหว่างรูปและปุ่ม */
+   padding: 4rem 0;
+}
+
+.MakerSpace-img {
+   width: 80%;
+   display: block;
+   margin: auto;
+   padding: 0; /* เอา padding 4rem ออกเพื่อไม่ให้เกิดช่องว่าง */
+}
+
+/*booking button*/
+.row {
+--bs-gutter-x: 2.5rem;
+--bs-gutter-y: 0;
+display: flex;
+flex-wrap: wrap;
+margin-top: calc(var(--bs-gutter-y) * -1);
+margin-right: calc(var(--bs-gutter-x) * -.5);
+margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+
+#booking-button {
+   width: 100%;
+   min-height: auto;
+   padding: 2rem 0;
+   text-align: left;
+
+}
+
+.letsbook {
+   color: var(--white);
+   text-align: left;
+   font-size: 45px;
+   margin-bottom: 1rem; /* เว้นช่องว่างระหว่างหัวข้อกับปุ่ม */
+}
+
+/* แก้ไขปุ่ม Booking */
+#booking-button .button {
+  width: 100%; /* ใช้ % เพื่อให้ปรับตามขนาดจอ */
+  max-width: 100%;
+  min-width: 100px;
+  border-radius: 40px;
+  transition: 0.5s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:var(--white);
+  padding: 40px;
+  flex-direction: column; /* จัดเรียงแนวตั้ง */
+  font-size: 32px;
+  color: var(--black);
+  
+}
+
+#booking-button .button img {
+  width: 100%;
+  height: auto;
+  border-radius: 40px;
+}
+
+#booking-button .button:hover {
+  transform: translateY(-10px);
+  color: var(--booking-hover);
+}
+
+
+/*footer*/
+.footer-frame{
+   background:var(--footer-color);
+   border-top-left-radius: 40px;
+   border-top-right-radius: 40px;
+   width: 70%;
+   position: absolute;
+   justify-content: center;
+   left:15%;
+}
+.logo-footer{
+   color: var(--white);
+   font-family: "Tac One", serif;
+   font-size: 75px;
+   margin-left: 4rem;
+   margin-top: 3rem;
+}
+.contactUs{
+   color: var(--black); 
+   background-color: #bd300d;
+   border-radius: 10px;
+   margin-left: 4rem;
+   margin-bottom: 1rem;
+   padding: 0.5rem;
+}
+.email{
+   color: var(--white); 
+   margin-left: 4rem;
+}
+.phone{
+   color: var(--white);  
+   margin-left: 4rem;           
+}
+.address{
+   color: var(--white); 
+   margin-left: 4rem;
+   margin-bottom: 3rem;
+}
+
+
+
+
+@media (min-width: 768px) {
+  nav {
+    padding: 2rem 1rem;
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav__bar {
+    padding: 0;
+    color:var(--white);
+    
+  }
+
+  .nav__menu__btn {
+    display: none;
+  }
+
+  .nav__links {
+    padding: 0;
+    width: unset;
+    position: static;
+    transform: none;
+    flex-direction: row;
+    background-color: transparent;
+  }
+
+  .nav__btn {
+    display: block;
+  }
+
+  .nav__links a::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--black);
+    transition: 0.3s;
+    transform-origin: left;
+  }
+  .nav__links a:hover::after {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+

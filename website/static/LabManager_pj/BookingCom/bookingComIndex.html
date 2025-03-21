@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
+
+    <link rel="stylesheet" href="styleCom.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- แถบ bar-->
+    <header class="header">
+      <nav>
+        <div class="nav__bar">
+          <div class="logo">
+               <div class="lab-manager">Lab Manager</div>
+               <span class ="btn booking-computer">: Booking Computer</span>
+               <img src="./img/iconCom.png" alt="bookingCom">
+          </div>
+        </div>
+        <a href="homeIndex.html" class="btn nav__btn">HOME</a>
+        <!-- <button class="btn nav__btn">HOME</button> -->
+      </nav>
+    </header>
+    
+    <!-- ผังเลือกที่นั่ง -->
+    <body>
+        <div class="main">
+        <div class="computers">
+            <div class="com-selector">
+                <div class="title">Seat number</div>
+                <div class="seats">
+                    <div class="status">
+                        <div class="item">Available</div>
+                        <div class="item">Booked</div>
+                        <div class="item">Selected</div>
+
+                    </div>
+                    <div class="container">
+                              <div class="all-seats"></div>
+                          </div>
+                     <script src="script.js"></script>
+                      
+                    <!-- <div class="all-seats">
+                        <input type="checkbox" name="computers" id="c1">
+                        <label for="c1" class="seat booked">C1</label> 
+                        <input type="checkbox" name="computers" id="c2" class="seat-checkbox">
+                        <label for="c2" class="seat">C2</label>
+                    </div> -->
+                </div>
+
+                <div class="userInput">
+                   <div class="frame">
+                       <p class="underline-bg">Booking</p>
+                       <!-- Computer Selection -->
+                   <div class="no">
+                              <p>No.</p>
+                                             <select id="computer-select" class="box-select-com">
+                                                            <option value="" disabled selected>Select Computer</option>
+                                                            <option value="C1">C1</option>
+                                                            <option value="C2">C2</option>
+                                                            <option value="C3">C3</option>
+                                                            <option value="C4">C4</option>
+                                                            <option value="C5">C5</option>
+                                                            <option value="C6">C6</option>
+                                                            <option value="C7">C7</option>
+                                                            <option value="C8">C8</option>
+                                                            <option value="C9">C9</option>
+                                                            <option value="C10">C10</option>
+                                                            <option value="C11">C11</option>
+                                                            <option value="C12">C12</option>
+                                                            <option value="C13">C13</option>
+                                                            <option value="C14">C14</option>
+                                                            <option value="C15">C15</option>
+                                                            <option value="C16">C16</option>
+                                                            <option value="C17">C17</option>
+                                                            <option value="C18">C18</option>
+                                                            <option value="C19">C19</option>
+                                                            <option value="C20">C20</option>
+                                                            <option value="C21">C21</option>
+                                             </select>
+                   </div> <!-- no -->
+
+                   <!-- Date Selection -->
+                   <div class="date2">
+                       <p class="Date">Date</p>
+                       <input type="date" id="booking-date" class="boxDate" />
+                   </div>
+
+                   <!-- Time Start -->
+                   <div class="time-start">
+                     <p class="time-start2">Time Start</p>
+                     <input type="time" id="time-start" class="box-time-start" />
+                   </div>
+     
+                   <!-- Time End -->
+                   <div class="time-end">
+                     <p class="time-end2">Time End</p>
+                     <input type="time" id="time-end" class="box-time-end" />
+                   </div>
+
+                    <!-- Confirm Button -->
+                   <div class="button-confirm" onclick="confirmBooking()">
+                      <div class="confirm">Confirm</div>
+                   </div>
+     
+  
+                              
+                  </div> <!-- frame -->
+                   </div>
+                   
+               </div>
+    </body>
+
+    <!-- <body>
+       <div class="userInput">
+               <div class="frame">
+                   <p>Booking</p>
+               </div>
+
+       </div>
+    </body> -->
+
+    <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <script>
+         function confirmBooking() {
+           let selectedComputer = document.getElementById("computer-select").value;
+           let selectedDate = document.getElementById("booking-date").value;
+           let timeStart = document.getElementById("time-start").value;
+           let timeEnd = document.getElementById("time-end").value;
+  
+           if (!selectedComputer || !selectedDate || !timeStart || !timeEnd) {
+             alert("Please select all required fields!");
+             return;
+           }
+  
+           alert(
+             `✅ Booking Confirmed!:\n\n📌 Computer: ${selectedComputer}\n📅 Date: ${selectedDate}\n⏰ Time: ${timeStart} - ${timeEnd}`
+           );
+         }
+      </script>
+
+
+  </body>
+</html>

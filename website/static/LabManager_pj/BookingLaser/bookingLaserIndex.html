@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="styleLaser.css" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <!-- แถบ bar-->
+  <header class="header">
+    <nav>
+      <div class="nav__bar">
+        <div class="logo">
+          <div class="lab-manager">Lab Manager</div>
+          <span class="btn booking-laser">: Booking Laser Cutter</span>
+          <img src="./img/iconLaser.png" alt="bookingLaser">
+        </div>
+      </div>
+      <a href="homeIndex.html" class="btn nav__btn">HOME</a>
+    </nav>
+  </header>
+
+  <!-- ข้อมูลอุปกรณ์ -->
+
+  <body>
+    <div class="main">
+      <div class="info">
+        <img src="./img/infoLaser.PNG" alt="info-laser">
+      </div>
+    </div>
+    <div class="userInput">
+      <div class="frame">
+        <p class="underline-bg">Booking</p>
+
+        <!-- Equipments section -->
+        <div class="equipments">
+          <p>Equipments</p>
+          <select class="box-select-laser">
+            <option value="" disabled selected>Select Laser Cutter</option>
+            <option value="MIT Laser 6040">MIT Laser 6040</option>
+            <option value="TS6090L">TS6090L</option>
+            <option value="SCTECH 1390E-Series">SCTECH 1390E-Series</option>
+          </select>
+        </div>
+        <!-- Computer Selection -->
+        <div class="no-laser">
+          <p>No.</p>
+          <select id="laser-select" class="no-box">
+            <option value="" disabled selected>Select No.</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </div> <!-- no -->
+
+        <!-- Date Selection -->
+        <div class="date-laser">
+          <p class="date">Date</p>
+          <input type="date" id="booking-date" class="boxDate" />
+        </div>
+
+        <!-- Time Start -->
+        <div class="time-start-laser">
+          <p class="time-start">Time Start</p>
+          <input type="time" id="time-start" class="box-time-start" />
+        </div>
+
+        <!-- Time End -->
+        <div class="time-end-laser">
+          <p class="time-end">Time End</p>
+          <input type="time" id="time-end" class="box-time-end" />
+        </div>
+
+        <!-- Confirm Button -->
+        <div class="button-confirm" onclick="confirmBooking()">
+          <div class="confirm">Confirm</div>
+        </div>
+
+
+
+      </div> <!-- frame -->
+    </div>
+
+    </body>
+  </body>
+
+  <!-- <body>
+       <div class="userInput">
+               <div class="frame">
+                   <p>Booking</p>
+               </div>
+
+       </div>
+    </body> -->
+
+  <script src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <script>
+    function confirmBooking() {
+      let typeLaser = document.querySelector(".box-select-laser").value;
+      let no = document.querySelector(".no-box").value;
+      let date = document.getElementById("booking-date").value;
+      let timeStart = document.getElementById("time-start").value;
+      let timeEnd = document.getElementById("time-end").value;
+
+      if (!typeLaser || !no || !date || !timeStart || !timeEnd) {
+        alert("Please fill in all fields before confirming.");
+        return;
+      }
+
+      let message = `✅ Booking Confirmed!\n\n📌 Laser Cutter: ${typeLaser}\n🔢 NO.: ${no}\n📅 Date: ${date}\n⏰ Time: ${timeStart} - ${timeEnd}`;
+      alert(message);
+    }
+  </script>
+
+
+</body>
+
+</html>

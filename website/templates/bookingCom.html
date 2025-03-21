@@ -1,0 +1,186 @@
+{% extends "base.html" %} {% block title %}bookingCom{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='/LabManager_pj/BookingCom/styleCom.css') }}" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <form method="POST" action="{{ url_for('views.booking_computer') }}">
+    <header class="header">
+      <nav>
+        <div class="nav__bar">
+          <div class="logo">
+            <div class="lab-manager">Lab Manager</div>
+            <span class="btn booking-computer">: Booking Computer</span>
+            <img src="{{url_for ('static', filename='/LabManager_pj/BookingCom/iconCom.png')}}" alt="bookingCom" />
+          </div>
+        </div>
+        <a href="{{ url_for('views.home') }}" class="btn nav__btn">HOME</a>
+      </nav>
+    </header>
+
+    <div class="main">
+      <div class="map-seats">
+          <img src="{{ url_for('static', filename='LabManager_pj/BookingCom/previewSeats.png') }}" alt="map-seat">
+        <div class="userInput">
+          <div class="frame">
+            <p class="underline-bg">Booking</p>
+          
+          <div class="no">
+            <div class="fontNO">NO.</div>
+            <select id="computer-select" name="booking" class="box-select-com">
+              <option value="" disabled selected>Select Computer</option>
+              <option value="C1">C1</option>
+              <option value="C2">C2</option>
+              <option value="C3">C3</option>
+              <option value="C4">C4</option>
+              <option value="C5">C5</option>
+              <option value="C6">C6</option>
+              <option value="C7">C7</option>
+              <option value="C8">C8</option>
+              <option value="C9">C9</option>
+              <option value="C10">C10</option>
+              <option value="C11">C11</option>
+              <option value="C12">C12</option>
+              <option value="C13">C13</option>
+              <option value="C14">C14</option>
+              <option value="C15">C15</option>
+              <option value="C16">C16</option>
+              <option value="C17">C17</option>
+              <option value="C18">C18</option>
+              <option value="C19">C19</option>
+              <option value="C20">C20</option>
+              <option value="C21">C21</option>
+            </select>
+          </div>
+
+          <div class="date2">
+            <p class="Date">Date</p>
+            <input type="date" id="booking-date" name="booking_date" class="boxDate"/>
+          </div>
+
+          <div class="time-start">
+            <div class="time-start2">Time Start</div>
+            <input type="time" id="time-start" name="booking_start_time" class="box-time-start" />
+          </div>
+
+          <div class="time-end">
+            <div class="time-end2">Time End</div>
+            <input type="time" id="time-end" name="booking_end_time" class="box-time-end"/>
+          </div>
+
+          <button type="submit" class="button-confirm">
+            <div class="confirm">Confirm</div>
+          </button>
+        </div>
+
+      <!-- สร้างตารางโชว์ข้อมูลการจอง -->
+        <div class="booking-table">
+          <h2>Booking List</h2>
+          <table border="1">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Computer</th>
+                <th>Date</th>
+                <th>Time Start</th>
+                <th>Time End</th>
+              </tr>
+            </thead>
+            <tbody id="booking-list">
+              <!-- Booking data will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <script src="main.js"></script>
+  <script>
+    // Add this function to load bookings
+    function loadBookings() {
+        fetch('/get-computer-bookings')
+            .then(response => response.json())
+            .then(bookings => {
+                const bookingList = document.getElementById('booking-list');
+                bookingList.innerHTML = ''; // Clear existing entries
+                
+                bookings.forEach(booking => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${booking.username}</td>
+                        <td>${booking.computer}</td>
+                        <td>${booking.date}</td>
+                        <td>${booking.time_start}</td>
+                        <td>${booking.time_end}</td>
+                    `;
+                    bookingList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error loading bookings:', error));
+    }
+
+    // Modify your existing confirmBooking function
+    function confirmBooking(event) {
+        event.preventDefault();
+        
+        let form = event.target.closest('form');
+        let selectedComputer = document.getElementById("computer-select").value;
+        let selectedDate = document.getElementById("booking-date").value;
+        let timeStart = document.getElementById("time-start").value;
+        let timeEnd = document.getElementById("time-end").value;
+
+        if (!selectedComputer || !selectedDate || !timeStart || !timeEnd) {
+            alert("Please select all required fields!");
+            return;
+        }
+
+        // Create form data matching Flask backend expectations
+        const formData = new FormData();
+        formData.append('booking', selectedComputer);
+        formData.append('booking_date', selectedDate);
+        formData.append('booking_start_time', timeStart);
+        formData.append('booking_end_time', timeEnd);
+
+        // Send the form data using fetch
+        fetch('/booking/computer', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`✅ Booking Confirmed!\n\n📌 Computer: ${selectedComputer}\n📅 Date: ${selectedDate}\n⏰ Time: ${timeStart} - ${timeEnd}`);
+                form.reset();
+                loadBookings();
+            } else {
+                alert('Booking failed: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to create booking');
+        });
+    }
+
+    // Load bookings when page loads
+    document.addEventListener('DOMContentLoaded', loadBookings);
+
+    // Refresh bookings every minute
+    setInterval(loadBookings, 60000);
+
+    // Add event listener to the form
+    document.querySelector('form').addEventListener('submit', confirmBooking);
+  </script>
+</body>
+</html>
+{% endblock %}
+
