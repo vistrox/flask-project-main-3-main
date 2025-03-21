@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link rel="stylesheet" href="./vars.css" />
     <link rel="stylesheet" href="./styleLogin.css" /> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='/LabManager_pj/vars.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='/LabManager_pj/Login/styleLogin.css') }}" />
     <style>
        @import url('https://fonts.googleapis.com/css2?family=Tac+One&display=swap'); 
@@ -57,28 +56,34 @@
             font-size: 1.8em; /* Adjust the font size as needed */
         }
       </style>
+  <form method="POST">
+    <header class="header">
+      <nav>
+        <div class="nav__bar">
+          <div class="logo">
+            <div class="lab-manager">Lab Manager</div>
+          </div>
+      </nav>
+    </header>
 
-  <div class="login-page">
-    <div class="bar"></div>
-    <div class="lab-manager">Lab Manager</div>
-    <div class="login-frame">
-      <h2 class="please-login">Please Login</h2>
+  <!-- <div class="login-page"> -->
+    <!-- <div class="bar"></div> -->
+    <!-- <div class="lab-manager">Lab Manager</div> -->
+    
       <form method="POST">
-        <div class="form-group">
-          <label for="email" class="email-address">Email Address</label>
+        <div class="login-frame">
+          <h2 class="please-login">Please Login</h2>
+          <p for="email" class="email-address">Email Address</p>
           <input type="email" class="form-control email-box" id="email" name="email" placeholder="Enter email" />
-        </div>
-        
-        <div class="form-group">
-          <label for="password" class="password">Password</label>
+          <p for="password" class="password">Password</p>
           <input type="password" class="form-control password-box" id="password" name="password" placeholder="Enter password" />
           <br/>
           <div class="auth-links">
           <a href="{{ url_for('auth.sign_up') }}" class="signup-text">Don't have an account? Sign Up</a>
           <button type="submit" class="btn btn-primary button-login">Login</button>
           </br><br/>
-        </div>
-    </div>
+          </div>
+   
         
        
         <!-- <a href="{{ url_for('auth.sign_up') }}">SignUp</a>
@@ -89,6 +94,16 @@
     </div>
   </div>
 {% endblock %}
+
+
+
+
+
+<!-- Login = Please Login -->
+<!-- form-group = login-page -->
+<!-- email = email-address -->
+<!-- password = password -->
+<!-- btn btn-primary = button-login-->
 
 
 

@@ -17,10 +17,10 @@
                 <i class="ri-menu-line"></i>
             </div>
         </div>
-        <ul class="nav__links" id="nav-links">
+        <!-- <ul class="nav__links" id="nav-links">
             <li><a href="#help&sup">Help & Support</a></li>
             <li><a href="#MyProfile">My Profile</a></li>
-        </ul>
+        </ul> -->
         {% if user.is_authenticated %}
             <a href="{{ url_for('auth.logout') }}" class="btn nav__btn">Log Out</a>
         {% else %}

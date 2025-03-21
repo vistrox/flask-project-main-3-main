@@ -246,6 +246,12 @@ nav {
   height: 60px;
   transition: 0.5s;
   cursor: pointer;
+
+  background: var(--dark-5-border, #f4f4f5);
+  border-radius: 10px;
+  padding: 8px;
+  font-family: "Tilt Warp", serif;
+  border: 2px solid black;
 }
 
 .Date{
@@ -265,6 +271,9 @@ nav {
   font-size: 20px;
   transition: 0.5s;
   cursor: pointer;
+  font-family: "Tilt Warp", serif;
+  color: var(--selectbox-color);
+  border: 2px solid black;
 }
 
 
@@ -291,6 +300,8 @@ nav {
   /* top: 600px; */
   font-size: 20px;
   max-width: 200px;
+  font-family: "Tilt Warp", serif;
+  border: 2px solid black;
 }
 
 .time-end2 {
@@ -321,6 +332,8 @@ nav {
   /* top: 609px; */
   font-size: 20px;
   max-width: 200px;
+  font-family: "Tilt Warp", serif;
+  border: 2px solid black;
 }
 
 .button-confirm {
@@ -353,17 +366,49 @@ nav {
   transition: 0.3;
 }
 
+.userInput{
+  display: flex;
+  justify-content: space-between; /* Adjusts spacing between elements */
+  align-items: flex-start; /* Aligns elements at the top */
+  gap: 30px; /* Adds space between the form and table */
+  width: 90%;
+  max-width: 1200px;
+  margin: 50px auto; /* Centers the container */
+}
 .booking-table{
   font-family: "Tilt Warp", serif;
   color: var(--black);   
   font-size: 35px;    
-  position: absolute;   
-  left: 65%;
-  background-color: var(--white);
-  margin-top: -4rem;
+  /* position: absolute;    */
+  /* left: 60%; */
+  /* margin-top: 70rem; */
   text-align: center;
-  padding: 1rem;
+  padding: 4rem;
   border-radius: 10px;
-  padding: 1rem;
 
+  width: 100%; /* Adjust width so it fits well */
+  position: relative; /* Change from absolute to relative */
+  left: 70%; /* Remove left: 60% to prevent it from shifting */
+  margin-top: 0; /* Reset margin */
+}
+
+.booking-list{
+  font-family: "Tilt Warp", serif;
+  color: var(--white);   
+  font-size: 45px;  
+  padding: 2rem; 
+  margin-bottom: auto;
+  position: relative;
+  left: -11%;
+}
+
+.booked{
+  font-family: "Tilt Warp", serif;
+  color: var(--booking-hover);
+  font-size: 30px;
+  background-color: var(--white);
+}
+.b1{
+  background-color: var(--room-color);
+  
 }

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<header class="header">
+    <nav>
+        <div class="nav__bar">
+            <div class="logo">
+                <div class="lab-manager">Admin Dashboard</div>
+            </div>
+        </div>
+        <a href="{{ url_for('views.home') }}" class="btn nav__btn">HOME</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn nav__btn">Log Out</a>
+    </nav>
+</header>
+
+<div class="container mt-4">
+    <h2>Bookings Overview</h2>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <h3>Computer Bookings</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Computer</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in computer_bookings %}
+                    <tr>
+                        <td>{{ booking.user.userName }}</td>
+                        <td>{{ booking.computer_number }}</td>
+                        <td>{{ booking.booking_date }}</td>
+                        <td>{{ booking.booking_start_time }} - {{ booking.booking_end_time }}</td>
+                        <td>
+                            <button onclick="deleteBooking('computer', {{ booking.id }})" class="btn btn-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <h3>3D Printer Bookings</h3>
+            <!-- Similar table for printer bookings -->
+        </div>
+
+        <div class="col-md-4">
+            <h3>Laser Cutter Bookings</h3>
+            <!-- Similar table for laser bookings -->
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>User Management</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Admin Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.userName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ "Admin" if user.is_admin else "User" }}</td>
+                        <td>
+                            <button onclick="toggleAdmin({{ user.id }})" class="btn btn-warning btn-sm">Toggle Admin</button>
+                            <button onclick="deleteUser({{ user.id }})" class="btn btn-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteBooking(type, id) {
+    if (confirm('Are you sure you want to delete this booking?')) {
+        fetch(`/admin/delete-booking/${type}/${id}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function toggleAdmin(userId) {
+    fetch(`/admin/toggle-admin/${userId}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+function deleteUser(userId) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        fetch(`/admin/delete-user/${userId}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %}
